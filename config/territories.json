@@ -1,0 +1,102 @@
+[
+  {
+    "compensation": false,
+    "name": "Açores",
+    "territoryKey": "LOCAL-400000"
+  },
+  {
+    "compensation": false,
+    "name": "Aveiro",
+    "territoryKey": "LOCAL-010000"
+  },
+  {
+    "compensation": false,
+    "name": "Beja",
+    "territoryKey": "LOCAL-020000"
+  },
+  {
+    "compensation": false,
+    "name": "Braga",
+    "territoryKey": "LOCAL-030000"
+  },
+  {
+    "compensation": false,
+    "name": "Bragança",
+    "territoryKey": "LOCAL-040000"
+  },
+  {
+    "compensation": false,
+    "name": "Castelo Branco",
+    "territoryKey": "LOCAL-050000"
+  },
+  {
+    "compensation": false,
+    "name": "Coimbra",
+    "territoryKey": "LOCAL-060000"
+  },
+  {
+    "compensation": false,
+    "name": "Évora",
+    "territoryKey": "LOCAL-070000"
+  },
+  {
+    "compensation": false,
+    "name": "Faro",
+    "territoryKey": "LOCAL-080000"
+  },
+  {
+    "compensation": false,
+    "name": "Guarda",
+    "territoryKey": "LOCAL-090000"
+  },
+  {
+    "compensation": false,
+    "name": "Leiria",
+    "territoryKey": "LOCAL-100000"
+  },
+  {
+    "compensation": false,
+    "name": "Lisboa",
+    "territoryKey": "LOCAL-110000"
+  },
+  {
+    "compensation": false,
+    "name": "Madeira",
+    "territoryKey": "LOCAL-300000"
+  },
+  {
+    "compensation": false,
+    "name": "Portalegre",
+    "territoryKey": "LOCAL-120000"
+  },
+  {
+    "compensation": false,
+    "name": "Porto",
+    "territoryKey": "LOCAL-130000"
+  },
+  {
+    "compensation": false,
+    "name": "Santarém",
+    "territoryKey": "LOCAL-140000"
+  },
+  {
+    "compensation": false,
+    "name": "Setúbal",
+    "territoryKey": "LOCAL-150000"
+  },
+  {
+    "compensation": false,
+    "name": "Viana do Castelo",
+    "territoryKey": "LOCAL-160000"
+  },
+  {
+    "compensation": false,
+    "name": "Vila Real",
+    "territoryKey": "LOCAL-170000"
+  },
+  {
+    "compensation": false,
+    "name": "Viseu",
+    "territoryKey": "LOCAL-180000"
+  }
+]

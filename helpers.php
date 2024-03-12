@@ -29,23 +29,8 @@ function getVotingResults($code, $year)
     return json_decode($json, true);
 }
 
-function getParties(array $partyResults = null): array
+function getHeader(array $parties = null): array
 {
-    global $parties;
-    if ($partyResults == null) {
-        return $parties;
-    }
-    foreach ($partyResults as $party) {
-        $parties[] = $party['acronym'];
-    }
-    return $parties;
-}
-
-function getHeader(array $partyResults = null): array
-{
-    global $parties;
-    $parties = getParties($partyResults);
-
     $header = ['Ano', 'Região', 'Concelho', 'Freguesia', 'Eleitores Registrados', 'Votos Nulos', 'Votos em Branco', 'Votos Válidos', 'Abstenção'];
     foreach ($parties as $party) {
         $header[] = $party;
@@ -53,7 +38,7 @@ function getHeader(array $partyResults = null): array
     return $header;
 }
 
-function formatResultItem($regiao, $concelho, $freguesia, $year, $item): array
+function formatResultItem($regiao, $concelho, $freguesia, $year, $item, $parties): array
 {
     $row = [];
     $row['ano'] = $year;
@@ -66,7 +51,7 @@ function formatResultItem($regiao, $concelho, $freguesia, $year, $item): array
     $row['totalVoters'] = $item['totalVoters'];
     $row['missing'] = $item['subscribedVoters'] - $item['totalVoters'];
 
-    foreach (getParties() as $party) {
+    foreach ($parties as $party) {
         $row[$party] = 0;
     }
 
@@ -74,6 +59,48 @@ function formatResultItem($regiao, $concelho, $freguesia, $year, $item): array
         $row[$party['acronym']] = $party['votes'];
     }
     return $row;
+}
+
+function getRegionsVotingResultsForYear($regions, $year)
+{
+    global $parties;
+    $parties = [];
+    $header_raw_data = [];
+    $rows_raw_data = [];
+    $rows = [];
+
+//    $a = 0;
+    foreach ($regions as $region) {
+        $concelhos = getTerritoryChildren($region['territoryKey'], $year);
+        foreach ($concelhos as $concelho) {
+            $freguesias = getTerritoryChildren($concelho['territoryKey'], $year);
+            foreach ($freguesias as $freguesia) {
+                $freguesia_results = getVotingResults($freguesia['territoryKey'], $year);
+                foreach ($freguesia_results['currentResults']['resultsParty'] as $party) {
+                    $parties[$party['acronym']] = $party['acronym'];
+                }
+                $rows_raw_data[] = [
+                    $region['name'],
+                    $concelho['name'],
+                    $freguesia_results['territoryFullName'],
+                    $year,
+                    $freguesia_results['currentResults']
+                ];
+            }
+        }
+        ksort($header_raw_data);
+
+//        $a++;
+//        if ($a == 5) {
+//            break;
+//        }
+    }
+    $rows[] = getHeader($parties);
+    foreach ($rows_raw_data as $row) {
+        $rows[] = formatResultItem($row[0], $row[1], $row[2], $row[3], $row[4], $parties);
+    }
+
+    save_as_csv($rows, $year);
 }
 
 function save_as_csv($rows, $year)
@@ -85,30 +112,7 @@ function save_as_csv($rows, $year)
     rewind($fp);
     $csv = stream_get_contents($fp);
     fclose($fp);
-    file_put_contents('legislativas-' . $year . '.csv', $csv);
-}
-
-function getRegionsVotingResultsForYear($regions, $year)
-{
-    $rows = [];
-    $header_is_set = false;
-
-    foreach ($regions as $region) {
-        $concelhos = getTerritoryChildren($region['territoryKey'], $year);
-        foreach ($concelhos as $concelho) {
-            $freguesias = getTerritoryChildren($concelho['territoryKey'], $year);
-            foreach ($freguesias as $freguesia) {
-                $freguesia_results = getVotingResults($freguesia['territoryKey'], $year);
-                if (!$header_is_set) {
-                    $rows[] = getHeader($freguesia_results['currentResults']['resultsParty']);
-                    $header_is_set = true;
-                }
-                $rows[] = formatResultItem($region['name'], $concelho['name'], $freguesia_results['territoryFullName'], $year, $freguesia_results['currentResults']);
-            }
-        }
-    }
-
-    save_as_csv($rows, $year);
+    file_put_contents('./data/legislativas-' . $year . '.csv', $csv);
 }
 
 ?>
